@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %} {% block title %} Articles {% endblock title %}
+{% block content %}
+
+    <div class="carderplace rounded-20 row align-items-center bg-light p-5 mt-5">
+ <div class="row">
+  {% for article in articles %}
+    <div class="col-12 col-md-6 mb-5">
+        <div class="card bg-light rounded-20 mb-4 h-100" id="{{article.id}}">
+            <div class='article-image-container'>
+                <img
+                    src="{{article.cover_image.url}}"
+                    class="card-img-top rounded-20"
+                    style="height: 40vh"
+                    alt="{{article.title}}"
+                />
+                <form action="{% url 'article.bookmark' article.id %}" method="POST">
+                    {% csrf_token %}
+
+                    {% if article.id in bookmarked %}
+                        <button type="submit" class='btn'>
+                            <i class="fas fa-heart fa-3x text-danger"></i>
+                        </button>
+                    {% else %}
+                        <button type="submit" class='btn'>
+                            <i class="fas fa-heart fa-3x text-light"></i>
+                        </button>
+                    {% endif %}
+
+                </form>
+            </div>
+
+        <div>
+            <h4 class="card-title text-center">
+            {{article.title|truncatewords:20 }}
+            </h4>
+            <div class="text-center mt-2 mb-2">
+
+                {% if user.id == article.user.id %}
+                <a
+                href="{% url 'article.article_update' article.id  %}"
+                class="btn btn-warning rounded-pill">
+                Редагувати
+                </a>
+                {% endif %}
+
+                <a
+                    href="{% url 'article.article_detail' article.id  %}"
+                    class="btn btn-success rounded-pill">
+                    Читати зараз
+                </a>
+
+                {% if user.id == article.user.id %}
+                    <a
+                    href="{% url 'article.article_delete' article.id  %}"
+                    class="btn btn-danger rounded-pill">
+                    Видалити
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <small> Створено: {{article.createdAt}} </small>
+            </li>
+            <li class="list-group-item">
+                <small> Змінено: {{article.modifiedAt}} </small>
+            </li>
+            <li class="list-group-item">
+                <small> Автор: <a class="text-capitalize fw-bolder" href="{% url 'user.user_profile' article.user.username %}"> {{article.user.username}} </a>
+                </small>
+            </li>
+        </ul>
+        </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% comment %} Taken from Documentation {% endcomment %}
+
+<div class="pagination">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a
+        href="?page={{ page_obj.previous_page_number }}"
+        class="page-link"
+        href="{{ page_obj.previous_page_number }}"
+        >&laquo;</a
+      >
+    </li>
+    {% endif %} {% for num in range %}
+    <li class="page-item {% if num == page_obj.number %} active {% endif %}">
+      <a href="?page={{num}}" class="page-link">{{num}}</a>
+    </li>
+    {% endfor %} {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}"
+        >&raquo;</a
+      >
+    </li>
+    {% endif %}
+  </ul>
+
+  {% comment %}
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+
+    {% endif %}
+
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+    </span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">next</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    {% endif %} {% endcomment %}
+  </span>
+</div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,239 @@
+{% extends 'base/base.html' %} 
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+    <div class="p-5 mb-4 bg-grayly rounded-20">
+        <h1>Швидкі посилання</h1>
+        <nav class="nav mt-3">
+             <a class="nav-link active bg-primary text-light me-2" aria-current="page" href="#favorites">Улюблене <i class="fas fa-arrow-down"></i> </a>
+            <a class="nav-link active bg-primary text-light me-2" aria-current="page" href="#articles" >Статті <i class="fas fa-arrow-down"></i> </a>
+            <a class="nav-link active bg-primary text-light me-2" aria-current="page" href="#reviews">Коментарі <i class="fas fa-arrow-down"></i> </a>
+        </nav>
+    </div>
+
+
+    <div class="profile">
+
+        <div id="profile-info" class="profile-info rounded-20 row align-items-center bg-info p-5">
+            <div class="col-md-4">
+                {% load static %}
+                <img src="{% static 'base/person.svg' %}" alt="Avatar">
+            </div>
+            <div class="col-md-8">
+                <h1 class='lead'>Ім`я користувача: {{userProfile.username}}</h1>
+                <h1 class='lead'>З нами з: {{userProfile.date_joined}}</h1>
+                <h1 class='lead'>
+                    Адмін: {% if userProfile.is_superuser %} Так {% else %} Ні {% endif %}
+                </h1>
+            </div>
+        </div>
+
+        <div id="favorites" class="profile-articles rounded-20 row align-items-center p-5 mt-5">
+            <h2 class='text-center mb-5'> <span class="text-capitalize">{{userProfile.username}}</span> має {{bookmarkedArticles.count}} улбленних статей
+            <i class='fas fa-heart text-danger'></i>
+            </h2>
+
+            <div class="row">
+                {% for bookmarkedArticle in bookmarkedArticles %}
+                <div class="col-12 col-md-6 mb-5">
+                    <div class="card rounded-20 bg-light mb-4 h-100">
+        
+                    <div class='article-image-container'>
+                        <img
+                            src="{{bookmarkedArticle.article.cover_image.url}}"
+                            class="card-img-top rounded-20"
+                            style="height: 40vh"
+                            alt="{{bookmarkedArticle.article.title}}"
+                        />
+                        <form action="{% url 'article.bookmark' bookmarkedArticle.article.id %}" method="POST">
+                            {% csrf_token %}
+
+                            {% if bookmarkedArticle.article.id in bookmarked %}
+                                <button type="submit" class='btn'>
+                                    <i class="fas fa-heart fa-3x text-danger"></i>
+                                </button>
+                            {% else %}
+                                <button type="submit" class='btn'>
+                                    <i class="fas fa-heart fa-3x"></i>
+                                </button>
+                            {% endif %}
+
+                        </form>
+                    </div>
+
+
+                    <div>
+                        <h4 class="card-title text-center">
+                        {{bookmarkedArticle.article.title|truncatewords:20 }}
+                        </h4>
+                        <div class="text-center mt-2 mb-2">
+                            {% if user.id == bookmarkedArticle.article.user.id %}
+                            <a
+                            href="{% url 'article.article_update' bookmarkedArticle.article.id  %}"
+                            class="btn btn-warning rounded-pill">
+                            Змінити
+                            </a>
+                        {% endif %}
+
+                        <a
+                            href="{% url 'article.article_detail' bookmarkedArticle.article.id  %}"
+                            class="btn btn-success rounded-pill">
+                            Читати зараз
+                        </a>
+
+                        {% if user.id == bookmarkedArticle.article.user.id %}
+                            <a
+                            href="{% url 'article.article_delete' bookmarkedArticle.article.id  %}"
+                            class="btn btn-danger rounded-pill">
+                            Видалити
+                            </a>
+                        {% endif %}
+
+                        </div>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <small> Створено: {{bookmarkedArticle.article.createdAt}} </small>
+                        </li>
+                        <li class="list-group-item">
+                            <small> Змінено: {{bookmarkedArticle.article.modifiedAt}} </small>
+                        </li>
+                        <li class="list-group-item">
+                            <small> Автор: <a class="text-capitalize fw-bolder" href="{% url 'user.user_profile' bookmarkedArticle.article.user.username %}"> {{bookmarkedArticle.article.user.username}} </a>
+                            </small>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="articles" class="profile-articles rounded-20 row align-items-center bg-light p-5 mt-5">
+            <h2 class='text-center mb-5'> <span class="text-capitalize">{{userProfile.username}}</span> має {{articles.count}} статей</h2>
+
+            <div class="row">
+                {% for article in articles %}
+                    <div class="col-12 col-md-6 mb-5">
+                        <div class="card rounded-20 bg-light mb-4 h-100" id="{{article.id}}">
+                            <div class='article-image-container'>
+                                <img
+                                    src="{{article.cover_image.url}}"
+                                    class="card-img-top rounded-20"
+                                    style="height: 40vh"
+                                    alt="{{article.title}}"
+                                />
+                                <form action="{% url 'article.bookmark' article.id %}" method="POST">
+                                    {% csrf_token %}
+
+                                    {% if article.id in bookmarked %}
+                                        <button type="submit" class='btn'>
+                                            <i class="fas fa-heart fa-3x text-danger"></i>
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class='btn'>
+                                            <i class="fas fa-heart fa-3x text-light"></i>
+                                        </button>
+                                    {% endif %}
+
+                                </form>
+                            </div>
+
+                        <div>
+                            <h4 class="card-title text-center">
+                            {{article.title|truncatewords:20 }}
+                            </h4>
+                            <div class="text-center mt-2 mb-2">
+
+                                {% if user.id == article.user.id %}
+                                <a
+                                href="{% url 'article.article_update' article.id  %}"
+                                class="btn btn-warning rounded-pill">
+                                Змінити
+                                </a>
+                                {% endif %}
+
+                                <a
+                                    href="{% url 'article.article_detail' article.id  %}"
+                                    class="btn btn-success rounded-pill">
+                                    Читати зараз
+                                </a>
+
+                                {% if user.id == article.user.id %}
+                                    <a
+                                    href="{% url 'article.article_delete' article.id  %}"
+                                    class="btn btn-danger rounded-pill">
+                                    Видалити
+                                    </a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <small> Створено: {{article.createdAt}} </small>
+                            </li>
+                            <li class="list-group-item">
+                                <small> Змінено: {{article.modifiedAt}} </small>
+                            </li>
+                            <li class="list-group-item">
+                                <small> Автор: <a class="text-capitalize fw-bolder" href="{% url 'user.user_profile' article.user.username %}"> {{article.user.username}} </a>
+                                </small>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div id="reviews" class="profile-reviews rounded-20 row align-items-center bg-light p-5 mt-5">
+            <h2 class='text-center mb-5'> <span class="text-capitalize">{{userProfile.username}}</span> надав {{reviews.count}} коментарів</h2>
+
+            {% for review in reviews %}
+                {% comment %} <h2>{{review.title}} -- {{review.user.username}}</h2> {% endcomment %}
+                
+                <div class="col-12 col-md-6">
+                <div class="review bg-light rounded-20 mb-4 h-100 p-3">
+                    <div>
+                        {% load static %}
+                        <img src="{% static 'base/person.svg' %}" class="person d-inline-block me-2" /> 
+                        <a href="/user/{{review.user.username}}">
+                            <strong class="text-capitalize">{{review.user.username}}</strong>
+                        </a>
+                        &nbsp ----- &nbsp
+                        <small>{{review.createdAt}}</small>
+                    </div>
+                    <br>
+                    <h4><strong>{{review.title}}</strong></h4>
+                
+                    <p>{{review.body}}</p>
+
+                    <div>
+                        <h5>Інформація про статтю</h5>
+                        <h6>Назва: {{review.article.title}}</h6>
+                        <small class="d-block">Створено: <a class="text-capitalize"  href="{% url 'user.user_profile' review.article.user.username %}">{{review.article.user.username}}</a></small>
+                        
+                        <a href="{% url 'article.article_detail' review.article.id %}" class="btn btn-success btn-sm mt-3 rounded-pill">Читати зараз</a>
+
+                        {% if user.id == review.user.id %}
+                            <a href="{% url 'article.review_update' review.id %}" class="btn btn-warning btn-sm mt-3 rounded-pill">Змінити</a>
+                            <a href="{% url 'article.review_delete' review.id %}" class="btn btn-danger btn-sm mt-3 rounded-pill">Видалити</a>
+                        {% endif %}
+                    
+                    </div>
+    </div>
+                </div>
+                
+            {% endfor %}
+
+        </div>
+
+    </div>
+{% endblock %}

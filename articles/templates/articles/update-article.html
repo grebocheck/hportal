@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %} 
+
+{% block title %} Редагувати статтю {% endblock %}
+
+{% block content %}
+
+    <div class="row justify-content-center">
+        <div class="col-12">
+            
+            <form enctype="multipart/form-data" method="POST" class="bg-light rounded-3 p-5 create-article">
+                {% csrf_token %}
+
+                {% load widget_tweaks %}
+
+                {{ form.media }}
+
+                <h1 class="text-center text-info">Редагувати статтю</h1>
+
+                <div class="form-group">
+                    {{ form.title|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.title|add_class:'form-control rounded-pill' }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.cover_image|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.cover_image|add_class:'form-control rounded-pill' }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.body|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.body|add_class:'form-control'|attr:'rows:20'|attr:'cols:20' }}
+                </div>
+                <div class="form-group">
+                    {{ form.file_1|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.file_1|add_class:'form-control rounded-pill' }}
+                </div>
+                <div class="form-group">
+                    {{ form.file_2|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.file_2|add_class:'form-control rounded-pill' }}
+                </div>
+                <div class="form-group">
+                    {{ form.file_3|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.file_3|add_class:'form-control rounded-pill' }}
+                </div>
+                <div class="form-group">
+                    {{ form.featured|add_label_class:'form-label mt-4 fw-bolder'}}
+                    {{ form.featured|add_class:'' }}
+                </div>
+
+                <input type="submit" class="btn btn-info rounded-pill mt-4" value="Зберегти статтю">
+
+
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

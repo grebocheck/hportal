@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %} 
+
+{% block title %} Головна {% endblock %}
+
+{% block content %} 
+
+{% if articles %}
+
+    <div class="bg-light p-5 rounded-3">
+
+        <h1 class="text-center text-primary mt-2 mb-5">Рекомендовані статті</h1>
+<div class="carderplace rounded-20 row align-items-center bg-light p-5 mt-5">
+        <div class="row">
+            {% for article in articles %}
+            <div class="col-12 col-md-6 mb-5">
+        <div class="card bg-light rounded-20 mb-4 h-100" id="{{article.id}}">
+            <div class='article-image-container'>
+                <img
+                    src="{{article.cover_image.url}}"
+                    class="card-img-top rounded-20"
+                    style="height: 40vh"
+                    alt="{{article.title}}"
+                />
+                <form action="{% url 'article.bookmark' article.id %}" method="POST">
+                    {% csrf_token %}
+
+                    {% if article.id in bookmarked %}
+                        <button type="submit" class='btn'>
+                            <i class="fas fa-heart fa-3x text-danger"></i>
+                        </button>
+                    {% else %}
+                        <button type="submit" class='btn'>
+                            <i class="fas fa-heart fa-3x text-light"></i>
+                        </button>
+                    {% endif %}
+
+                </form>
+            </div>
+
+        <div>
+            <h4 class="card-title text-center">
+            {{article.title|truncatewords:20 }}
+            </h4>
+            <div class="text-center mt-2 mb-2">
+
+                {% if user.id == article.user.id %}
+                <a
+                href="{% url 'article.article_update' article.id  %}"
+                class="btn btn-warning rounded-pill">
+                Редагувати
+                </a>
+                {% endif %}
+
+                <a
+                    href="{% url 'article.article_detail' article.id  %}"
+                    class="btn btn-success rounded-pill">
+                    Читати зараз
+                </a>
+
+                {% if user.id == article.user.id %}
+                    <a
+                    href="{% url 'article.article_delete' article.id  %}"
+                    class="btn btn-danger rounded-pill">
+                    Видалити
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <small> Створено: {{article.createdAt}} </small>
+            </li>
+            <li class="list-group-item">
+                <small> Змінено: {{article.modifiedAt}} </small>
+            </li>
+            <li class="list-group-item">
+                <small> Автор: <a class="text-capitalize fw-bolder" href="{% url 'user.user_profile' article.user.username %}"> {{article.user.username}} </a>
+                </small>
+            </li>
+        </ul>
+        </div>
+    </div>
+  {% endfor %}
+        </div>
+    </div>
+    </div>
+{% endif %}
+
+
+
+
+{% endblock %}
