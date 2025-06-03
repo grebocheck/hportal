@@ -92,6 +92,9 @@ def userProfile(request, username):
 
     bookmarked = []
 
+    # Initialise queryset to avoid UnboundLocalError when user is not authenticated
+    bookmarkedArticles = Bookmark.objects.none()
+
     if request.user.is_authenticated:
         bookmarkedArticles = Bookmark.objects.filter(user=user)
         for bookmark in bookmarkedArticles:
