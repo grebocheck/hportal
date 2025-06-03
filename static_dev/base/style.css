@@ -1,11 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+  --primary-color: #4b6cb7;
+  --secondary-color: #182848;
+}
+
 body {
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
 }
 
 .navbar {
   padding-top: 0;
   padding-bottom: 0;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: #ffffff !important;
+}
+
+.navbar .nav-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 #logo {
@@ -13,14 +34,14 @@ body {
 }
 
 .page-item.active .page-link {
-  background-color: #2fb380;
-  border-color: #2fb380;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 /* for inputs focus styling */
 .form-control:focus {
-  border-color: #2fb38082;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 5%), 0 0 0 0.25rem rgb(47 179 128 / 30%);
+  border-color: var(--primary-color);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%), 0 0 0 0.25rem rgba(75, 108, 183, 0.3);
 }
 
 #person {
@@ -41,8 +62,8 @@ body {
 }
 
 .create-article .form-control:focus {
-  border-color: #287bb59c;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 5%), 0 0 0 0.25rem rgb(40 123 181 / 34%);
+  border-color: var(--secondary-color);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%), 0 0 0 0.25rem rgba(24, 40, 72, 0.3);
 }
 
 /* profile-info */
@@ -90,6 +111,11 @@ body {
 .carderplace .card {
   border: 0;
   background: transparent;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+.carderplace .card:hover {
+  transform: translateY(-5px);
 }
 .carderplace .card .list-group-item {
   background: transparent;
@@ -118,6 +144,22 @@ footer a{
 
 #connect {
   background: rgb(0 0 0 / 10%)
+}
+
+#scrollTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media screen and (max-width: 768px) {

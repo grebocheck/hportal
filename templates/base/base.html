@@ -12,7 +12,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'base/bootstrap.css' %}" />
     <link rel="stylesheet" href="{% static 'base/style.css' %}" />
 
@@ -20,7 +20,7 @@
   </head>
   <body>
 
-    <nav id='header' class="navbar mb-5 navbar-expand-lg navbar-light bg-light">
+    <nav id='header' class="navbar mb-5 navbar-expand-lg">
       <div class="container-fluid">
         <a href="/" class="navbar-brand mb-5 mb-md-0">
           <img
@@ -122,7 +122,7 @@
       <!-- Left -->
 
       <div class="me-5 d-lg-block">
-        <a class='btn rounded-pill bg-light' href="#header"><i class="fas fa-arrow-up fa-2x"></i></a>
+        <a id="scrollTop" class='btn btn-primary rounded-pill d-none' href="#header"><i class="fas fa-arrow-up fa-2x"></i></a>
       </div>
 
     </section>
@@ -184,7 +184,8 @@
   </footer>
 <!-- Footer -->
 
-   <script src="https://kit.fontawesome.com/2e22223133.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/2e22223133.js" crossorigin="anonymous"></script>
+    <script src="{% static 'base/custom.js' %}" defer></script>
 
     <script
       defer

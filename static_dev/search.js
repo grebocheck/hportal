@@ -21,7 +21,7 @@ searchInput.addEventListener('keyup', (e) => {
     getData(absURL, (data) => {
       div = document.createElement('div')
 
-      div.classList.add('row')
+      div.classList.add('row', 'fade-in')
 
       html = makeHtml(data)
       div.innerHTML = html
