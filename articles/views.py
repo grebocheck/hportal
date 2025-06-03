@@ -60,8 +60,8 @@ def articles_list(request):
     return render(request, "articles/articles.html", context)
 
 
-def articleDetail(request, article_id):
-    article = get_object_or_404(Article, pk=article_id)
+def articleDetail(request, slug):
+    article = get_object_or_404(Article, slug=slug)
 
     bookmarked = False
 

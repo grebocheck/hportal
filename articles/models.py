@@ -3,11 +3,13 @@ from tinymce.models import HTMLField
 
 # For user relationship with reviews
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 # Create your models here.
 class Article(models.Model):
     title = models.CharField(max_length=256, verbose_name="Назва")
+    slug = models.SlugField(max_length=300, unique=True, blank=True)
     cover_image = models.ImageField(upload_to="article/images/", verbose_name="Превью")
     body = HTMLField(verbose_name="Стаття")
 
@@ -25,6 +27,21 @@ class Article(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.title)
+            slug = base_slug
+            counter = 1
+            while Article.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('article.article_detail', kwargs={'slug': self.slug})
 
 
 class Review(models.Model):
