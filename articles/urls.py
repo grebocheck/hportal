@@ -9,7 +9,7 @@ urlpatterns = [
     path("articles/search", views.articleSearch, name="article.article_search"),
 
     path("article/create", views.ArticleCreateView.as_view(), name="article.create_article"),
-    path("article/<int:article_id>", views.articleDetail, name="article.article_detail"),
+    path("article/<slug:slug>", views.articleDetail, name="article.article_detail"),
 
     # Editing and Deleting article
     path("article/<int:pk>/edit", views.ArticleUpdateView.as_view(), name="article.article_update"),

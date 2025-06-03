@@ -78,7 +78,7 @@
                         {% endif %}
 
                         <a
-                            href="{% url 'article.article_detail' bookmarkedArticle.article.id  %}"
+                            href="{% url 'article.article_detail' bookmarkedArticle.article.slug  %}"
                             class="btn btn-success rounded-pill">
                             Читати зараз
                         </a>
@@ -158,7 +158,7 @@
                                 {% endif %}
 
                                 <a
-                                    href="{% url 'article.article_detail' article.id  %}"
+                                    href="{% url 'article.article_detail' article.slug  %}"
                                     class="btn btn-success rounded-pill">
                                     Читати зараз
                                 </a>
@@ -220,7 +220,7 @@
                         <h6>Назва: {{review.article.title}}</h6>
                         <small class="d-block">Створено: <a class="text-capitalize"  href="{% url 'user.user_profile' review.article.user.username %}">{{review.article.user.username}}</a></small>
                         
-                        <a href="{% url 'article.article_detail' review.article.id %}" class="btn btn-success btn-sm mt-3 rounded-pill">Читати зараз</a>
+                        <a href="{% url 'article.article_detail' review.article.slug %}" class="btn btn-success btn-sm mt-3 rounded-pill">Читати зараз</a>
 
                         {% if user.id == review.user.id %}
                             <a href="{% url 'article.review_update' review.id %}" class="btn btn-warning btn-sm mt-3 rounded-pill">Змінити</a>
